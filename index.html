@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>رسائل محفوظة</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      text-align: center;
+      margin-top: 50px;
+}
+    #messages {
+      margin-bottom: 20px;
+}
+.message {
+      background-color: #f0f0f0;
+      padding: 10px;
+      margin: 5px auto;
+      width: 60%;
+      border-radius: 5px;
+}
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+}
+  </style>
+</head>
+<body>
+
+  <div id="messages"></div>
+
+  <input type="text" id="inputBox" placeholder="اكتب رسالتك هنا">
+  <button onclick="sendMessage()">إرسال</button>
+
+  <script>
+    // تحميل الرسائل المحفوظة عند فتح الصفحة
+    window.onload = function() {
+      const savedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+      savedMessages.forEach(msg => addMessageToPage(msg));
+};
+
+    function sendMessage() {
+      const input = document.getElementById("inputBox");
+      const text = input.value.trim();
+      if (text === "") return;
+
+      addMessageToPage(text);
+      saveMessage(text);
+      input.value = "";
+}
+
+    function addMessageToPage(text) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message";
+      msgDiv.textContent = text;
+      const container = document.getElementById("messages");
+      container.insertBefore(msgDiv, container.firstChild);
+}
+
+    function saveMessage(text) {
+      const messages = JSON.parse(localStorage.getItem("messages")) || [];
+      messages.push(text);
+      localStorage.setItem("messages", JSON.stringify(messages));
+}
+  </script>
+
+</body>
+</html>
